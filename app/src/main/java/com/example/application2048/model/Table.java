@@ -4,26 +4,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Table {
-    private Box[][] boxArray = new Box[4][4];
+    private int column = 4;
+    private int row = 4;
+    private Box[][] boxArray = new Box[row][column];
 
     public Table() {
-        for (int i = 0;i<4;i++){
-            for(int j=0;j<4;j++){
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < column; j++) {
                 boxArray[i][j] = null;
             }
         }
     }
 
-    private boolean isPositionValidToGenerate(Position pos){
+    private boolean isPositionValidToGenerate(Position pos) {
         return boxArray[pos.getX()][pos.getY()] == null;
     }
 
-    public ArrayList<Position> getPositiontsValidToGenerate(){
+    public ArrayList<Position> getPositiontsValidToGenerate() {
         ArrayList<Position> validPositions = new ArrayList<>();
-        for (int i = 0;i<4;i++){
-            for(int j=0;j<4;j++){
-                Position currentPos  = new Position(i,j);
-                if(isPositionValidToGenerate(currentPos)){
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < column; j++) {
+                Position currentPos = new Position(i, j);
+                if (isPositionValidToGenerate(currentPos)) {
                     validPositions.add(currentPos);
                 }
             }
@@ -31,11 +33,17 @@ public class Table {
         return validPositions;
     }
 
-    public void insertBox(Box box){
+    public void insertBox(Box box) {
         int i = box.getPosition().getX();
         int j = box.getPosition().getY();
         boxArray[i][j] = box;
     }
 
+    public Box[][] getBoxArray() {
+        return boxArray;
+    }
 
+    public void setBoxArray(Box[][] boxArray) {
+        this.boxArray = boxArray;
+    }
 }

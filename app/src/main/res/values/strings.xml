@@ -1,3 +1,17 @@
 <resources>
-    <string name="app_name">Application2048</string>
+    <string name="app_name">2048 Game</string>
+    <string name="play_game">New game</string>
+    <string name="quit">Quit</string>
+    <string name="manage_scores">Manage scores</string>
+    <string name="points">Points:</string>
+    <string name="date">Date:</string>
+    <string name="time">Time:</string>
+    <string name="delete">Delete</string>
+    <string name="share">Share</string>
+    <string name="confirm_dialog_title">Alert!</string>
+    <string name="confirm_dialog_message">Do you want to delete the word?</string>
+    <string name="confirm">yes</string>
+    <string name="cancel">no</string>
+    <string name="score">the score will not be erased.</string>
+
 </resources>

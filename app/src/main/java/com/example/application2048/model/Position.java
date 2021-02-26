@@ -9,6 +9,10 @@ public class Position {
         this.y = y;
     }
 
+    public Position sum(Position vector){
+        return new Position(this.x+vector.getX(), this.y + vector.getY());
+    }
+
     public int getX() {
         return x;
     }

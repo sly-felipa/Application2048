@@ -1,232 +1,241 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".MainActivity">
+    tools:context=".activity.MainActivity">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
+</androidx.constraintlayout.widget.ConstraintLayout>
     <TextView
         android:id="@+id/textViewUP"
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:background="#000000"
+        android:text="Ocupado"
+        android:textColor="@color/colorYellow"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textColor="@color/colorYellow"
-        android:background="#000000"
-        android:text="Ocupado" />
-
- <androidx.constraintlayout.widget.ConstraintLayout
-     android:id="@+id/table"
-     android:layout_width="match_parent"
-     android:layout_height="0dp"
-     app:layout_constraintDimensionRatio="1:1"
-     app:layout_constraintTop_toBottomOf="@+id/textViewUP"
-     >
-
-     <androidx.constraintlayout.widget.Guideline
-         android:id="@+id/firstVertical"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:orientation="vertical"
-         app:layout_constraintGuide_percent="0.25"/>
-
-     <androidx.constraintlayout.widget.Guideline
-         android:id="@+id/secondVertical"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:orientation="vertical"
-         app:layout_constraintGuide_percent="0.5"/>
-
-     <androidx.constraintlayout.widget.Guideline
-         android:id="@+id/thirdVertical"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:orientation="vertical"
-         app:layout_constraintGuide_percent="0.75"/>
-
-     <androidx.constraintlayout.widget.Guideline
-         android:id="@+id/firstHorizontal"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:orientation="horizontal"
-         app:layout_constraintGuide_percent="0.25"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 
-     <androidx.constraintlayout.widget.Guideline
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:orientation="horizontal"
-         app:layout_constraintGuide_percent="0.5"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/transparence"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:elevation="10dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="@id/table"
+        app:layout_constraintStart_toStartOf="@id/table"
+        app:layout_constraintTop_toBottomOf="@id/table"
+        app:layout_constraintTop_toTopOf="@id/table" />
 
-
-     <androidx.constraintlayout.widget.Guideline
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:orientation="horizontal"
-         app:layout_constraintGuide_percent="0.75"/>
-
-<!--     derecha-->
-<!--     izquierda-->
-     <ImageView
-         android:id="@+id/box00"
-         style="@style/box"
-         android:background="@color/colorAccent"
-         app:layout_constraintEnd_toStartOf="@id/firstVertical"
-         app:layout_constraintStart_toStartOf="parent"
-         app:layout_constraintTop_toTopOf="parent"></ImageView>
-
-     <ImageView
-         android:id="@+id/box01"
-         style="@style/box"
-         android:background="@color/colorAccent"
-         app:layout_constraintEnd_toStartOf="@+id/secondVertical"
-         app:layout_constraintStart_toEndOf="@id/firstVertical"
-         app:layout_constraintTop_toTopOf="parent"></ImageView>
-
-     <ImageView
-         android:id="@+id/box02"
-         style="@style/box"
-         android:background="@color/colorAccent"
-         app:layout_constraintEnd_toStartOf="@+id/thirdVertical"
-         app:layout_constraintStart_toEndOf="@id/secondVertical"
-         app:layout_constraintTop_toTopOf="parent"></ImageView>
-
-     <ImageView
-         android:id="@+id/box03"
-         style="@style/box"
-         android:background="@color/colorAccent"
-         app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintStart_toStartOf="@+id/thirdVertical"
-         app:layout_constraintTop_toTopOf="parent"></ImageView>
-
-     <ImageView
-         android:id="@+id/box10"
-         style="@style/box"
-         android:background="@color/colorAccent"
-         app:layout_constraintEnd_toStartOf="@+id/firstVertical"
-         app:layout_constraintStart_toStartOf="parent
-"         app:layout_constraintTop_toBottomOf="@+id/box00"
-         ></ImageView>
-
-     <ImageView
-     android:id="@+id/box11"
-         style="@style/box"
-     android:background="@color/colorAccent"
-     app:layout_constraintEnd_toStartOf="@+id/secondVertical"
-     app:layout_constraintStart_toEndOf="@id/firstVertical"
-     app:layout_constraintTop_toBottomOf="@+id/box01"
-     ></ImageView>
-
-     <ImageView
-         android:id="@+id/box12"
-         style="@style/box"
-         android:background="@color/colorAccent"
-         app:layout_constraintEnd_toStartOf="@+id/thirdVertical"
-         app:layout_constraintStart_toStartOf="@id/secondVertical"
-         app:layout_constraintTop_toBottomOf="@id/box02"
-
-         ></ImageView>
-
-     <ImageView
-         android:id="@+id/box13"
-         style="@style/box"
-         android:background="@color/colorAccent"
-         app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintStart_toStartOf="@+id/thirdVertical"
-         app:layout_constraintTop_toBottomOf="@id/box03"
-
-
-         ></ImageView>
-<!--tercera fila-->
-     <ImageView
-         android:id="@+id/box20"
-         style="@style/box"
-         android:background="@color/colorAccent"
-         app:layout_constraintEnd_toStartOf="@+id/firstVertical"
-         app:layout_constraintStart_toStartOf="parent
-"         app:layout_constraintTop_toBottomOf="@+id/box10"
-         ></ImageView>
-
-     <ImageView
-         android:id="@+id/box21"
-         style="@style/box"
-         android:background="@color/colorAccent"
-         app:layout_constraintEnd_toStartOf="@+id/secondVertical"
-         app:layout_constraintStart_toEndOf="@id/firstVertical"
-         app:layout_constraintTop_toBottomOf="@+id/box11"
-         ></ImageView>
-
-     <ImageView
-         android:id="@+id/box22"
-         style="@style/box"
-         android:background="@color/colorAccent"
-         app:layout_constraintEnd_toStartOf="@+id/thirdVertical"
-         app:layout_constraintStart_toStartOf="@id/secondVertical"
-         app:layout_constraintTop_toBottomOf="@id/box12"
-
-         ></ImageView>
-
-     <ImageView
-         android:id="@+id/box23"
-         style="@style/box"
-         android:background="@color/colorAccent"
-         app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintStart_toStartOf="@+id/thirdVertical"
-         app:layout_constraintTop_toBottomOf="@id/box13"
-
-
-         ></ImageView>
-<!--     cuarta fila -->
-     <ImageView
-         android:id="@+id/box30"
-         style="@style/box"
-
-         android:background="@color/colorAccent"
-         app:layout_constraintEnd_toStartOf="@+id/firstVertical"
-         app:layout_constraintStart_toStartOf="parent
-"         app:layout_constraintTop_toBottomOf="@+id/box20"
-         ></ImageView>
-
-     <ImageView
-         android:id="@+id/box31"
-         style="@style/box"
-         android:background="@color/colorAccent"
-         app:layout_constraintEnd_toStartOf="@+id/secondVertical"
-         app:layout_constraintStart_toEndOf="@id/firstVertical"
-         app:layout_constraintTop_toBottomOf="@+id/box21"
-         ></ImageView>
-
-     <ImageView
-         android:id="@+id/box32"
-         style="@style/box"
-         android:background="@color/colorAccent"
-         app:layout_constraintEnd_toStartOf="@+id/thirdVertical"
-         app:layout_constraintStart_toStartOf="@id/secondVertical"
-         app:layout_constraintTop_toBottomOf="@id/box22"
-
-         ></ImageView>
-
-     <ImageView
-         android:id="@+id/box33"
-         style="@style/box"
-         android:background="@color/colorAccent"
-         app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintStart_toStartOf="@+id/thirdVertical"
-         app:layout_constraintTop_toBottomOf="@id/box23"
-         ></ImageView>
- </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/textViewDown"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/table"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        app:layout_constraintTop_toBottomOf="@+id/table"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintTop_toBottomOf="@+id/textViewUP">
 
-        android:background="@color/colorPrimaryDark"
-        android:text="Ocupado" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/firstVertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.25" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/secondVertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/thirdVertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.75" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/firstHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.25" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.75" />
+
+        <!--     derecha-->
+        <!--     izquierda-->
+        <ImageView
+            android:id="@+id/box00"
+            style="@style/box"
+            android:background="@color/colorAccent"
+            app:layout_constraintEnd_toStartOf="@id/firstVertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/box01"
+            style="@style/box"
+            android:background="@color/colorAccent"
+            app:layout_constraintEnd_toStartOf="@+id/secondVertical"
+            app:layout_constraintStart_toEndOf="@id/firstVertical"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/box02"
+            style="@style/box"
+            android:background="@color/colorAccent"
+            app:layout_constraintEnd_toStartOf="@+id/thirdVertical"
+            app:layout_constraintStart_toEndOf="@id/secondVertical"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/box03"
+            style="@style/box"
+            android:background="@color/colorAccent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/thirdVertical"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/box10"
+            style="@style/box"
+            android:background="@color/colorAccent"
+            app:layout_constraintEnd_toStartOf="@+id/firstVertical"
+            app:layout_constraintStart_toStartOf="parent
+"
+            app:layout_constraintTop_toBottomOf="@+id/box00" />
+
+        <ImageView
+            android:id="@+id/box11"
+            style="@style/box"
+            android:background="@color/colorAccent"
+            app:layout_constraintEnd_toStartOf="@+id/secondVertical"
+            app:layout_constraintStart_toEndOf="@id/firstVertical"
+            app:layout_constraintTop_toBottomOf="@+id/box01" />
+
+        <ImageView
+            android:id="@+id/box12"
+            style="@style/box"
+            android:background="@color/colorAccent"
+            app:layout_constraintEnd_toStartOf="@+id/thirdVertical"
+            app:layout_constraintStart_toStartOf="@id/secondVertical"
+            app:layout_constraintTop_toBottomOf="@id/box02"
+
+            />
+
+        <ImageView
+            android:id="@+id/box13"
+            style="@style/box"
+            android:background="@color/colorAccent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/thirdVertical"
+            app:layout_constraintTop_toBottomOf="@id/box03"
+
+
+            />
+        <!--tercera fila-->
+        <ImageView
+            android:id="@+id/box20"
+            style="@style/box"
+            android:background="@color/colorAccent"
+            app:layout_constraintEnd_toStartOf="@+id/firstVertical"
+            app:layout_constraintStart_toStartOf="parent
+"
+            app:layout_constraintTop_toBottomOf="@+id/box10" />
+
+        <ImageView
+            android:id="@+id/box21"
+            style="@style/box"
+            android:background="@color/colorAccent"
+            app:layout_constraintEnd_toStartOf="@+id/secondVertical"
+            app:layout_constraintStart_toEndOf="@id/firstVertical"
+            app:layout_constraintTop_toBottomOf="@+id/box11" />
+
+        <ImageView
+            android:id="@+id/box22"
+            style="@style/box"
+            android:background="@color/colorAccent"
+            app:layout_constraintEnd_toStartOf="@+id/thirdVertical"
+            app:layout_constraintStart_toStartOf="@id/secondVertical"
+            app:layout_constraintTop_toBottomOf="@id/box12"
+
+            />
+
+        <ImageView
+            android:id="@+id/box23"
+            style="@style/box"
+            android:background="@color/colorAccent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/thirdVertical"
+            app:layout_constraintTop_toBottomOf="@id/box13"
+
+
+            />
+        <!--     cuarta fila -->
+        <ImageView
+            android:id="@+id/box30"
+            style="@style/box"
+
+            android:background="@color/colorAccent"
+            app:layout_constraintEnd_toStartOf="@+id/firstVertical"
+            app:layout_constraintStart_toStartOf="parent
+"
+            app:layout_constraintTop_toBottomOf="@+id/box20" />
+
+        <ImageView
+            android:id="@+id/box31"
+            style="@style/box"
+            android:background="@color/colorAccent"
+            app:layout_constraintEnd_toStartOf="@+id/secondVertical"
+            app:layout_constraintStart_toEndOf="@id/firstVertical"
+            app:layout_constraintTop_toBottomOf="@+id/box21" />
+
+        <ImageView
+            android:id="@+id/box32"
+            style="@style/box"
+            android:background="@color/colorAccent"
+            app:layout_constraintEnd_toStartOf="@+id/thirdVertical"
+            app:layout_constraintStart_toStartOf="@id/secondVertical"
+            app:layout_constraintTop_toBottomOf="@id/box22"
+
+            />
+
+        <ImageView
+            android:id="@+id/box33"
+            style="@style/box"
+            android:background="@color/colorAccent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/thirdVertical"
+            app:layout_constraintTop_toBottomOf="@id/box23" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/textViewDown"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="100dp"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/table"-->
+
+    <!--        android:background="@color/colorPrimaryDark"-->
+    <!--        android:text="Ocupado" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

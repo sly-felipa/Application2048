@@ -1,10 +1,12 @@
 package com.example.application2048.model;
 
-import android.graphics.Color;
+import android.widget.TextView;
 
 public class Box {
     private int content;
     private Position position;
+    private TextView view;
+    private boolean moved = false;
 
     public Box(int content, int x, int y) {
         this.content = content;
@@ -30,5 +32,21 @@ public class Box {
 
     public void setPosition(Position position) {
         this.position = position;
+    }
+
+    public TextView getView() {
+        return view;
+    }
+
+    public void setView(TextView view) {
+        this.view = view;
+    }
+
+    public boolean isMoved() {
+        return moved;
+    }
+
+    public void setMoved(boolean moved) {
+        this.moved = moved;
     }
 }
