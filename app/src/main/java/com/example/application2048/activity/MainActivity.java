@@ -1,48 +1,137 @@
 package com.example.application2048.activity;
 
-import android.content.ClipData;
-import android.graphics.Color;
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.TypedValue;
-import android.view.MotionEvent;
+import android.text.InputType;
 import android.view.View;
-import android.widget.GridLayout;
-import android.widget.ImageView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
 import com.example.application2048.R;
+import com.example.application2048.db.DBSQLite;
+import com.example.application2048.db.IDB;
 import com.example.application2048.eventlisteners.GameSwipeListener;
 import com.example.application2048.model.Box;
 import com.example.application2048.model.Game;
 import com.example.application2048.model.Position;
+import com.example.application2048.model.Score;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.Calendar;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class MainActivity extends AppCompatActivity {
+    private IDB db;
 
     private Game game;
+    private int score = 0;
+    private int bestScore = 0;
+    private int firstBestScore = 0;
+    private String username = "Anonymous";
+    private Score currentScore;
+
+    // views
+    private TextView scoreNumberView;
+    private TextView bestScoreNumberView;
+
+    //Button
+    private Button btnNewGame;
+    ////////
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        game = new Game();
-        startNewGame();
+        this.db = new DBSQLite(this);
+
+        this.scoreNumberView = findViewById(R.id.scoreNumber);
+        this.bestScoreNumberView = findViewById(R.id.bestNumber);
+        this.btnNewGame = findViewById(R.id.btnNewGame);
+
+        setListeners();
+
+        askUsername();
 
     }
 
+    private void searchMaxScore(){
+        Score maxScore = this.db.findMaxScore();
+        if (maxScore != null) {
+            this.bestScore = maxScore.getPoints();
+            this.firstBestScore = this.bestScore;
+        }
+    }
+
+    private void setListeners(){
+        this.btnNewGame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startNewGame();
+            }
+        });
+    }
+
+    private void askUsername(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Please, enter your username:");
+        builder.setCancelable(false);
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+
+                startNewGame();
+            }
+        });
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                username = input.getText().toString();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
+    private void initScore() {
+        this.score = 0;
+        long millis =Calendar.getInstance().getTimeInMillis();
+        this.currentScore = new Score(0,0,millis,0,username);
+        currentScore = this.db.insertScore(currentScore);
+        updateStats();
+    }
+
+
     private void startNewGame() {
+        if(game!=null){
+            cleanView();
+        }
+
+        game = new Game();
+        searchMaxScore();
         insertFirstBoxes();
         setEvents();
+        initScore();
     }
 
     private void setEvents() {
@@ -51,25 +140,28 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     private Position directionVector(int direction) {
         Position pos;
 
         switch (direction) {
-            case 3:
-                pos = new Position(0, 1);
-                break;
-            case 0:
+            case 0://arriba
+//                pos = new Position(0, -1);
                 pos = new Position(-1, 0);
                 break;
-            case 1:
+            case 1://abajo
+//                pos = new Position(0, 1);
                 pos = new Position(1, 0);
                 break;
-            case 2:
+            case 2://izq
+//                pos = new Position(-1, 0);
                 pos = new Position(0, -1);
                 break;
-
+            case 3://dere
+//                pos = new Position(1, 0);
+                pos = new Position(0, 1);
+                break;
             default:
+//                pos = new Position(0, 0);
                 pos = new Position(0, 0);
                 break;
         }
@@ -79,14 +171,14 @@ public class MainActivity extends AppCompatActivity {
 
     public ArrayList<Position> calculateMaxPosition(Position direction, Box box) {
         Position anterior = new Position(0, 0);
-        Position next = new Position(box.getPosition().getX(),box.getPosition().getY());
-        next = box.getPosition();
+        Position next = new Position(box.getPosition().getX(), box.getPosition().getY());
+        //next = box.getPosition();
 
-        do{
+        do {
             anterior = new Position(next.getX(), next.getY());
-            next = next.sum(direction);
-        }while(next.getX() >= 0 && next.getX() < 4 && next.getY() >= 0 && next.getY() < 4
-                && game.getTable().getBoxArray()[next.getX()][next.getY()] == null);
+            next = anterior.sum(direction);
+        } while ((next.getX() >= 0 && next.getX() < 4 && next.getY() >= 0 && next.getY() < 4)
+                && (game.getTable().getBoxArray()[next.getX()][next.getY()] == null));
 
 
         ArrayList<Position> resultado = new ArrayList<>();
@@ -96,34 +188,77 @@ public class MainActivity extends AppCompatActivity {
         return resultado;
     }
 
+    private void getLoopIndex(Position direction, ArrayList<Integer> indexI, ArrayList<Integer> indexJ) {
+        for (int i = 0; i < 4; i++) {
+            indexI.add(i);
+            indexJ.add(i);
+        }
+
+        //arriba para abajo
+        if (direction.getX() == 1) {
+            indexI.clear();
+            for (int i = 3; i >= 0; i--) {
+                indexI.add(i);
+            }
+        }
+
+        //izquierda a derecha
+        if (direction.getY() == 1) {
+            indexJ.clear();
+            for (int i = 3; i >= 0; i--) {
+                indexJ.add(i);
+            }
+        }
+    }
+
     public void move(int direction) {
         // 0 up 1 down 2 left 3 right
         Position directionVector = directionVector(direction);
+        ArrayList<Integer> indexI = new ArrayList<>();
+        ArrayList<Integer> indexJ = new ArrayList<>();
+        getLoopIndex(directionVector, indexI, indexJ);
 
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
+        for (Integer i : indexI) {
+            for (Integer j : indexJ) {
                 Box box = game.getTable().getBoxArray()[i][j];
-                if(box!=null){
+                if (box != null) {
                     ArrayList<Position> posiblePositions = calculateMaxPosition(directionVector, box);
 
                     Position next = posiblePositions.get(1);
-                    Box nextBox = game.getTable().getBoxArray()[next.getX()][next.getY()];
-                    if(nextBox != null && nextBox.getContent()==box.getContent()){
+                    Box nextBox = null;
+                    if (next.getX() <= 3 && next.getY() <= 3 && next.getX() >= 0 && next.getY() >= 0) {
+                        nextBox = game.getTable().getBoxArray()[next.getX()][next.getY()];
+                    }
+                    if (nextBox != null && nextBox.getContent() == box.getContent() && !nextBox.isMixed()) {
                         // podre mezclarme
                         ConstraintLayout table = this.findViewById(R.id.table);
 
-                        box.setContent(box.getContent() * 2);
-                        box.getView().setText(box.getContent() + "");
-                        game.getTable().getBoxArray()[box.getPosition().getX()][box.getPosition().getY()] = box;
+                        Box mixedBox = new Box(box.getContent() * 2, next);
+                        this.score += mixedBox.getContent();
+                        if (this.score > this.bestScore) {
+                            this.bestScore = this.score;
+                        }
+
+                        mixedBox.setMixed(true);
+                        mixedBox.setView(generateViewForBox(mixedBox.getContent()));
+
+                        game.getTable().getBoxArray()[box.getPosition().getX()][box.getPosition().getY()] = null;
+                        game.getTable().getBoxArray()[nextBox.getPosition().getX()][nextBox.getPosition().getY()] = null;
+
+                        game.getTable().getBoxArray()[mixedBox.getPosition().getX()][mixedBox.getPosition().getY()] = mixedBox;
+
+
+                        table.removeView(box.getView());
                         table.removeView(nextBox.getView());
-                        applyMovement(box,next);
-                    }
-                    else{
+
+
+                        applyMovement(mixedBox, next);
+                    } else {
                         Position anterior = posiblePositions.get(0);
                         game.getTable().getBoxArray()[box.getPosition().getX()][box.getPosition().getY()] = null;
                         box.setPosition(anterior);
                         game.getTable().getBoxArray()[box.getPosition().getX()][box.getPosition().getY()] = box;
-                        applyMovement(box,anterior);
+                        applyMovement(box, anterior);
                     }
 
                     //realizar comprobaciones
@@ -131,19 +266,56 @@ public class MainActivity extends AppCompatActivity {
                 }
 
 
-
             }
+        }
+
+        insertRandomBox();
+
+        if (isGameOver()) {
+            Toast.makeText(this, "GAME OVER :(", Toast.LENGTH_SHORT).show();
         }
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 Box box = game.getTable().getBoxArray()[i][j];
                 if (box != null) {
-                    box.setMoved(false);
+                    box.setMixed(false);
                 }
 
             }
         }
+
+        this.updateStats();
+    }
+
+    private void cleanView(){
+        ConstraintLayout table = this.findViewById(R.id.table);
+
+        for(int i = 0;i<4;i++){
+            for(int j = 0;j<4;j++){
+                Box box = game.getTable().getBoxArray()[i][j];
+                if(box!=null){
+                    table.removeView(box.getView());
+                }
+            }
+        }
+
+
+    }
+
+    private void updateStats() {
+        scoreNumberView.setText(this.score + "");
+        bestScoreNumberView.setText(this.bestScore + "");
+
+        this.currentScore.setPoints(this.score);
+        this.currentScore.setSecondsGame((Calendar.getInstance().getTimeInMillis() / 1000) - (this.currentScore.getDate()/1000));
+
+        this.currentScore = this.db.updateScore(this.currentScore);
+
+    }
+
+    private boolean isGameOver() {
+        return game.getTable().getPositiontsValidToGenerate().size() == 0;
     }
 
     private void applyMovement(Box box, Position nextPosition) {
@@ -220,19 +392,6 @@ public class MainActivity extends AppCompatActivity {
         return view;
     }
 
-
-   /* @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            ClipData data = ClipData.newPlainText("", "");
-            View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
-            v.startDrag(data, shadowBuilder, v, 0);
-            v.setVisibility(View.INVISIBLE);
-            return true;
-        } else {
-            return false;
-        }
-    }*/
 
 }
 

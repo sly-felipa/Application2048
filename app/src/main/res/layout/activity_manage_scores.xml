@@ -6,14 +6,120 @@
     android:layout_height="match_parent"
     tools:context=".activity.ManageScoresActivity">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/headerManager"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:focusable="false"
+        android:focusableInTouchMode="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/firstVertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.33" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/secondVertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.66" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/firstHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.25" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/secondHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.50" />
+
+        <EditText
+            android:id="@+id/txtSearch"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="15dp"
+            android:inputType="number"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <info.hoang8f.widget.FButton
+            android:id="@+id/btnLess"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Less Than"
+            android:onClick="onClickLessThan"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@id/secondHorizontal"
+            app:layout_constraintEnd_toEndOf="@id/firstVertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/firstHorizontal" />
+
+        <info.hoang8f.widget.FButton
+            android:id="@+id/btnGreater"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:onClick="onClickGreaterThan"
+            android:text="Greater Than"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@id/secondHorizontal"
+            app:layout_constraintEnd_toEndOf="@id/secondVertical"
+            app:layout_constraintStart_toStartOf="@id/firstVertical"
+            app:layout_constraintTop_toBottomOf="@id/firstHorizontal" />
+
+        <info.hoang8f.widget.FButton
+            android:id="@+id/btnEquals"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:onClick="onClickEquals"
+            android:text="Equals"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@id/secondHorizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/secondVertical"
+            app:layout_constraintTop_toBottomOf="@id/firstHorizontal" />
+
+        <info.hoang8f.widget.FButton
+            android:id="@+id/btnOrderTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:onClick="filterPointsByOrder"
+            android:text="Order by Time"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/secondVertical"
+            app:layout_constraintStart_toStartOf="@id/firstVertical"
+            app:layout_constraintTop_toBottomOf="@id/secondHorizontal" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/headerManager" />
+    <!--    app:layout_constraintHorizontal_bias="0.5"-->
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

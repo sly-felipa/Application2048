@@ -12,14 +12,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.30" />
+        app:layout_constraintGuide_percent="0.40" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/secondVertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.60" />
+        app:layout_constraintGuide_percent="0.70" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/firstHorizontal"
@@ -43,30 +43,56 @@
         app:layout_constraintGuide_percent="0.75" />
 
     <TextView
-        android:id="@+id/twPointsTitle"
+        android:id="@+id/twUserNameTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/points"
+        android:text="@string/name"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/txtUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Ananananan"
+            android:textAlignment="center"
+            android:textSize="25sp"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/secondHorizontal"
+            app:layout_constraintEnd_toStartOf="@id/firstVertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/firstHorizontal" />
+
     <TextView
-        android:id="@+id/twPoints"
+        android:id="@+id/txtPointsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/points"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/thirdHorizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/secondHorizontal" />
+
+    <TextView
+        android:id="@+id/txtPoints"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="9066633"
         android:textAlignment="center"
         android:textSize="25sp"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/firstVertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/firstHorizontal" />
+        app:layout_constraintTop_toBottomOf="@id/thirdHorizontal" />
 
     <TextView
-        android:id="@+id/twDateTitle"
+        android:id="@+id/txtDateTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -78,19 +104,20 @@
 
 
     <TextView
-        android:id="@+id/twDate"
+        android:id="@+id/txtDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="0000000000"
         android:textSize="15sp"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@id/secondHorizontal"
         app:layout_constraintEnd_toStartOf="@+id/secondVertical"
         app:layout_constraintStart_toEndOf="@id/firstVertical"
         app:layout_constraintTop_toBottomOf="@id/firstHorizontal" />
 
     <TextView
-        android:id="@+id/txTimeTitle"
+        android:id="@+id/txtTimeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/time"
@@ -101,12 +128,13 @@
         app:layout_constraintTop_toBottomOf="@id/secondHorizontal" />
 
     <TextView
-        android:id="@+id/txTime"
+        android:id="@+id/txtTime"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:text="0000000"
         android:textSize="15sp"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/secondVertical"
         app:layout_constraintStart_toEndOf="@id/firstVertical"

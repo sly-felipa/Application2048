@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">2048 Game</string>
+    <string name="app_name">2048</string>
     <string name="play_game">New game</string>
+    <string name="game_description">Join the numbers and \nget to the <b>2048 tile!</b></string>
     <string name="quit">Quit</string>
     <string name="manage_scores">Manage scores</string>
     <string name="points">Points:</string>
@@ -12,6 +13,11 @@
     <string name="confirm_dialog_message">Do you want to delete the word?</string>
     <string name="confirm">yes</string>
     <string name="cancel">no</string>
-    <string name="score">the score will not be erased.</string>
+    <string name="descriptionScore">the score will not be erased.</string>
+    <string name="score">SCORE</string>
+    <string name="best">BEST</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="name">Name:</string>
 
 </resources>

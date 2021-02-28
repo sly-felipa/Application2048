@@ -7,6 +7,7 @@ public class Box {
     private Position position;
     private TextView view;
     private boolean moved = false;
+    private boolean mixed = false;
 
     public Box(int content, int x, int y) {
         this.content = content;
@@ -48,5 +49,13 @@ public class Box {
 
     public void setMoved(boolean moved) {
         this.moved = moved;
+    }
+
+    public boolean isMixed() {
+        return mixed;
+    }
+
+    public void setMixed(boolean mixed) {
+        this.mixed = mixed;
     }
 }

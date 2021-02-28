@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorYellow"
+    android:background="@color/colorPrimary"
     tools:context=".activity.SplashActivity">
 
     <ImageView
@@ -13,7 +13,6 @@
         android:layout_height="250dp"
         android:src="@drawable/logo"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        />
+        android:layout_centerVertical="true"/>
 
 </RelativeLayout>

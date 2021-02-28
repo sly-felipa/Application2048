@@ -1,5 +1,10 @@
 package com.example.application2048.model;
 
+
+import com.example.application2048.utils.StringUtils;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
@@ -7,8 +12,9 @@ import java.util.Objects;
 public class Score {
     private long id;
     private int points;
-    private int date;
+    private long date;
     private double secondsGame;
+    private String name = "Anonymous";
 
 //    Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 //    long secondsSinceEpoch = calendar.getTimeInMillis() / 1000L;
@@ -17,11 +23,12 @@ public class Score {
     public Score() {
     }
 
-    public Score(long id, int points, int date, double secondsGame) {
+    public Score(long id, int points, long date, double secondsGame,String name) {
         this.id = id;
         this.points = points;
         this.date = date;
         this.secondsGame = secondsGame;
+        this.name = name;
     }
 
     public long getId() {
@@ -40,11 +47,11 @@ public class Score {
         this.points = points;
     }
 
-    public int getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(int date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
@@ -56,9 +63,32 @@ public class Score {
         this.secondsGame = secondsGame;
     }
 
-    public Date getCalendarDate(){
-        Date date = new Date((long)(this.date*1000));
-        return date;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getFormattedDate(){
+        try{
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(this.date);
+            DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            return formatter.format(calendar.getTime());
+        }catch (Exception ex){
+            return "<unparseable>";
+        }
+    }
+
+
+
+    public String getFormattedSecondsGame(){
+        int minutes = (int)(this.secondsGame/60);
+        int secondsLeft = (int)(this.secondsGame%60);
+
+        return StringUtils.padLeft(String.valueOf(minutes),2,'0')+ ":"+StringUtils.padLeft(String.valueOf(secondsLeft),2,'0');
     }
 
     @Override

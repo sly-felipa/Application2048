@@ -4,58 +4,65 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="@color/colorPrimary"
     android:gravity="center"
-    android:background="@color/backgroundColor"
+    android:orientation="vertical"
     tools:context=".activity.MainMenuActivity">
+
     <TextView
         android:id="@+id/tQ"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
         android:gravity="center"
+        android:text="@string/app_name"
         android:textColor="@color/colorYellow"
-        android:textSize="50sp"/>
+        android:textSize="60sp"
+        android:textStyle="bold" />
+
     <View
         android:layout_width="match_parent"
-        android:layout_height="20dp"></View>
+        android:layout_height="20dp" />
+
     <ImageView
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:src="@drawable/logo"/>
+        android:src="@drawable/logo" />
+
     <View
         android:layout_width="match_parent"
-        android:layout_height="20dp"></View>
+        android:layout_height="20dp" />
+
     <info.hoang8f.widget.FButton
         android:id="@+id/playGame"
-        fbutton:buttonColor="@color/lightGreen"
         android:layout_width="300dp"
-        android:text="@string/play_game"
         android:layout_height="wrap_content"
-        android:onClick="newGame"/>
+        android:onClick="newGame"
+        android:text="@string/play_game"
+        fbutton:buttonColor="@color/lightGreen" />
+
     <View
         android:layout_width="match_parent"
-        android:layout_height="20dp"></View>
+        android:layout_height="20dp" />
 
 
     <info.hoang8f.widget.FButton
         android:id="@+id/manageScores"
-        fbutton:buttonColor="@color/lightGreen"
         android:layout_width="300dp"
-        android:text="@string/manage_scores"
         android:layout_height="wrap_content"
-        android:onClick="manageScores"/>
+        android:onClick="manageScores"
+        android:text="@string/manage_scores"
+        fbutton:buttonColor="@color/lightGreen" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="20dp"></View>
+        android:layout_height="20dp" />
 
 
     <info.hoang8f.widget.FButton
         android:id="@+id/quit"
-        fbutton:buttonColor="@color/lightGreen"
         android:layout_width="300dp"
-        android:text="@string/quit"
         android:layout_height="wrap_content"
-        android:onClick="quit"/>
+        android:onClick="quit"
+        android:text="@string/quit"
+        fbutton:buttonColor="#8c7b75" />
 </LinearLayout>

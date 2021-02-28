@@ -29,7 +29,8 @@ public class DBSQLite extends SQLiteOpenHelper implements IDB {
                 "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "POINTS INT," +
                 "DATE INTEGER," +
-                "SECONDS_GAME REAL" +
+                "SECONDS_GAME REAL," +
+                "NAME VARCHAR(50)" +
                 ")"));
     }
 
@@ -48,8 +49,41 @@ public class DBSQLite extends SQLiteOpenHelper implements IDB {
     }
 
     @Override
-    public ArrayList<Score> findByPoints(int points, DBFilters filter) {
-        return null;
+    public ArrayList<Score> findByPoints(int points, String sign) {
+        ArrayList<Score> scores = new ArrayList<>();
+        String query = "SELECT * FROM SCORES WHERE POINTS "+ sign + " "+points;
+        Cursor cursor = null;
+
+        try{
+            if(mReadableDB == null){
+                mReadableDB = getReadableDatabase();
+            }
+
+            cursor = mReadableDB.rawQuery(query, null);
+            cursor.moveToFirst();
+
+            do{
+                Score score = new Score(
+                        cursor.getLong(cursor.getColumnIndex("ID")),
+                        cursor.getInt(cursor.getColumnIndex("POINTS")),
+                        cursor.getLong(cursor.getColumnIndex("DATE")),
+                        cursor.getDouble(cursor.getColumnIndex("SECONDS_GAME")),
+                        cursor.getString(cursor.getColumnIndex("NAME"))
+                );
+                scores.add(score);
+                cursor.moveToNext();
+            }while(!cursor.isAfterLast());
+
+        }catch (Exception ex){
+            Log.d(TAG, "QUERY ALL EXCEPTION! " + ex.getMessage());
+        }
+        finally{
+            if(cursor!= null){
+                cursor.close();
+            }
+        }
+
+        return scores;
     }
 
     @Override
@@ -70,8 +104,9 @@ public class DBSQLite extends SQLiteOpenHelper implements IDB {
                 Score score = new Score(
                         cursor.getLong(cursor.getColumnIndex("ID")),
                         cursor.getInt(cursor.getColumnIndex("POINTS")),
-                        cursor.getInt(cursor.getColumnIndex("DATE")),
-                        cursor.getDouble(cursor.getColumnIndex("SECONDS_GAME"))
+                        cursor.getLong(cursor.getColumnIndex("DATE")),
+                        cursor.getDouble(cursor.getColumnIndex("SECONDS_GAME")),
+                        cursor.getString(cursor.getColumnIndex("NAME"))
                 );
                 scores.add(score);
                 cursor.moveToNext();
@@ -90,6 +125,49 @@ public class DBSQLite extends SQLiteOpenHelper implements IDB {
     }
 
     @Override
+    public Score findMaxScore() {
+        ArrayList<Score> scores = new ArrayList<>();
+        String query = "SELECT * FROM SCORES WHERE POINTS GROUP BY ID, POINTS,DATE,SECONDS_GAME HAVING POINTS = MAX(POINTS)";
+        Cursor cursor = null;
+
+        try{
+            if(mReadableDB == null){
+                mReadableDB = getReadableDatabase();
+            }
+
+            cursor = mReadableDB.rawQuery(query, null);
+            cursor.moveToFirst();
+
+            do{
+                Score score = new Score(
+                        cursor.getLong(cursor.getColumnIndex("ID")),
+                        cursor.getInt(cursor.getColumnIndex("POINTS")),
+                        cursor.getLong(cursor.getColumnIndex("DATE")),
+                        cursor.getDouble(cursor.getColumnIndex("SECONDS_GAME")),
+                        cursor.getString(cursor.getColumnIndex("NAME"))
+                );
+                scores.add(score);
+                cursor.moveToNext();
+            }while(!cursor.isAfterLast());
+
+        }catch (Exception ex){
+            Log.d(TAG, "QUERY ALL EXCEPTION! " + ex.getMessage());
+        }
+        finally{
+            if(cursor!= null){
+                cursor.close();
+            }
+        }
+
+        if(scores.size()>0){
+            return scores.get(0);
+        }
+        else{
+            return null;
+        }
+    }
+
+    @Override
     public Score insertScore(Score score) {
         ContentValues values = new ContentValues();
         //values.put("ID",);
@@ -97,6 +175,7 @@ public class DBSQLite extends SQLiteOpenHelper implements IDB {
         values.put("POINTS", score.getPoints());
         values.put("DATE", score.getDate());
         values.put("SECONDS_GAME",score.getSecondsGame());
+        values.put("NAME", score.getName());
         try{
             if(mWritableDB == null){
                 mWritableDB = getWritableDatabase();
@@ -126,6 +205,21 @@ public class DBSQLite extends SQLiteOpenHelper implements IDB {
 
     @Override
     public Score updateScore(Score score) {
-        return null;
+        long generatedId = 0;
+        try {
+            if (mWritableDB == null) {
+                mWritableDB = getWritableDatabase();}
+            ContentValues values = new ContentValues();
+            values.put("POINTS", score.getPoints());
+            values.put("NAME", score.getName());
+            values.put("SECONDS_GAME",score.getSecondsGame());
+
+            generatedId = mWritableDB.update("SCORES", values, "ID" + " = ?",
+                    new String[]{String.valueOf(score.getId())});
+
+        } catch (Exception e) {
+            Log.d (TAG, "UPDATE EXCEPTION! " + e.getMessage());
+        }
+        return score;
     }
 }
