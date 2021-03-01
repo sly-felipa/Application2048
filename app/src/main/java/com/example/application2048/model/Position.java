@@ -9,6 +9,11 @@ public class Position {
         this.y = y;
     }
 
+    /**
+     * Suma a la posición actual del box la posición de dirección(rigth, left, down, up).
+     * @param vector
+     * @return
+     */
     public Position sum(Position vector){
         return new Position(this.x+vector.getX(), this.y + vector.getY());
     }

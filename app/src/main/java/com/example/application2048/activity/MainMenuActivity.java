@@ -16,15 +16,27 @@ public class MainMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_menu);
     }
 
+    /**
+     * Mata la aplicación.
+     * @param v
+     */
     public void quit(View v){
         this.finish();
     }
 
+    /**
+     * Inicia un nuevo juego.
+     * @param v
+     */
     public void newGame(View v){
         Intent intent = new Intent(MainMenuActivity.this, MainActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Inicia la vista de la lista de los scores.
+     * @param v
+     */
     public void manageScores(View v){
         Intent intent = new Intent(MainMenuActivity.this, ManageScoresActivity.class);
         startActivity(intent);

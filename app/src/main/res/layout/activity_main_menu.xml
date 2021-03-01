@@ -10,7 +10,7 @@
     tools:context=".activity.MainMenuActivity">
 
     <TextView
-        android:id="@+id/tQ"
+        android:id="@+id/gameTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -34,11 +34,9 @@
 
     <info.hoang8f.widget.FButton
         android:id="@+id/playGame"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
+        style="@style/buttonMenu"
         android:onClick="newGame"
-        android:text="@string/play_game"
-        fbutton:buttonColor="@color/lightGreen" />
+        android:text="@string/play_game" />
 
     <View
         android:layout_width="match_parent"
@@ -47,11 +45,9 @@
 
     <info.hoang8f.widget.FButton
         android:id="@+id/manageScores"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
+        style="@style/buttonMenu"
         android:onClick="manageScores"
-        android:text="@string/manage_scores"
-        fbutton:buttonColor="@color/lightGreen" />
+        android:text="@string/manage_scores" />
 
     <View
         android:layout_width="match_parent"
@@ -60,9 +56,7 @@
 
     <info.hoang8f.widget.FButton
         android:id="@+id/quit"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
+        style="@style/buttonMenu"
         android:onClick="quit"
-        android:text="@string/quit"
-        fbutton:buttonColor="#8c7b75" />
+        android:text="@string/quit" />
 </LinearLayout>

@@ -5,6 +5,11 @@ public final class DBFilters {
     public static final int GreaterThan=1;
     public static final int Equals=2;
 
+    /**
+     * Indica el filtro de búsqueda que se usará.
+     * @param filter
+     * @return
+     */
     public static String filterToString(int filter){
         String result = "";
         switch(filter){
@@ -17,7 +22,6 @@ public final class DBFilters {
             case Equals:
                 result = "=";
                 break;
-
             default:
                 break;
         }

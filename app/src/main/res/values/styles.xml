@@ -35,10 +35,51 @@
     <style name="box">
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_width">0dp</item>
-        <item name="android:background">@color/colorYellow</item>
         <item name="android:layout_margin">1dp</item>
         <item name="layout_constraintDimensionRatio">1</item>
     </style>
 
+    <style name="titleItems">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="layout_constraintDimensionRatio">1</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
+    <style name="descriptionItems">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="buttonItems">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/backgroundColor</item>
+        <item name="android:backgroundTint">@color/color128</item>
+    </style>
+
+    <style name="buttonMenu">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">300dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:backgroundTint">@color/colorYellow</item>
+    </style>
+
+    <style name="buttonScore">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_marginTop">@dimen/marginBtn</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:backgroundTint">@color/color256</item>
+    </style>
 </resources>

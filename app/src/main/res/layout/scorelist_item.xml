@@ -44,48 +44,42 @@
 
     <TextView
         android:id="@+id/twUserNameTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/titleItems"
         android:text="@string/name"
-        android:textSize="20sp"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/txtUserName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Ananananan"
-            android:textAlignment="center"
-            android:textSize="25sp"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="@id/secondHorizontal"
-            app:layout_constraintEnd_toStartOf="@id/firstVertical"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/firstHorizontal" />
+    <info.hoang8f.widget.FButton
+        android:id="@+id/btnEdit"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="@dimen/marginBtn"
+        android:backgroundTint="@color/color128"
+        android:drawableRight="@drawable/ic_baseline_edit_24"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@id/twUserNameTitle"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/txtUserName"
+        style="@style/descriptionItems"
+        android:text="dfgdfg"
+        app:layout_constraintBottom_toBottomOf="@id/secondHorizontal"
+        app:layout_constraintEnd_toStartOf="@id/firstVertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/firstHorizontal" />
 
     <TextView
         android:id="@+id/txtPointsTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/titleItems"
         android:text="@string/points"
-        android:textSize="20sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/thirdHorizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/secondHorizontal" />
 
     <TextView
         android:id="@+id/txtPoints"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="9066633"
-        android:textAlignment="center"
-        android:textSize="25sp"
-        android:textColor="@color/white"
+        style="@style/descriptionItems"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/firstVertical"
         app:layout_constraintStart_toStartOf="parent"
@@ -93,24 +87,14 @@
 
     <TextView
         android:id="@+id/txtDateTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        style="@style/titleItems"
         android:text="@string/date"
-        android:textSize="20sp"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/firstVertical"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <TextView
         android:id="@+id/txtDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="0000000000"
-        android:textSize="15sp"
-        android:textColor="@color/white"
+        style="@style/descriptionItems"
         app:layout_constraintBottom_toTopOf="@id/secondHorizontal"
         app:layout_constraintEnd_toStartOf="@+id/secondVertical"
         app:layout_constraintStart_toEndOf="@id/firstVertical"
@@ -118,23 +102,15 @@
 
     <TextView
         android:id="@+id/txtTimeTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/titleItems"
         android:text="@string/time"
-        android:textSize="20sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/thirdHorizontal"
         app:layout_constraintStart_toEndOf="@id/firstVertical"
         app:layout_constraintTop_toBottomOf="@id/secondHorizontal" />
 
     <TextView
         android:id="@+id/txtTime"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:text="0000000"
-        android:textSize="15sp"
-        android:textColor="@color/white"
+        style="@style/descriptionItems"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/secondVertical"
         app:layout_constraintStart_toEndOf="@id/firstVertical"
@@ -142,11 +118,8 @@
 
     <info.hoang8f.widget.FButton
         android:id="@+id/btnDelete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="1dp"
+        style="@style/buttonItems"
         android:text="@string/delete"
-        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@+id/secondHorizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/secondVertical"
@@ -154,12 +127,10 @@
 
     <info.hoang8f.widget.FButton
         android:id="@+id/btnShare"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
+        style="@style/buttonItems"
         android:text="@string/share"
-        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/secondVertical"/>
+        app:layout_constraintStart_toStartOf="@id/secondVertical"
+        app:layout_constraintTop_toTopOf="@id/secondHorizontal" />
 </androidx.constraintlayout.widget.ConstraintLayout>

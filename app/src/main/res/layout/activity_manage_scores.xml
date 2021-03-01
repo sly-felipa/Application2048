@@ -12,6 +12,7 @@
         android:layout_height="180dp"
         android:focusable="false"
         android:focusableInTouchMode="true"
+        android:background="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -51,7 +52,6 @@
             android:layout_marginStart="15dp"
             android:layout_marginBottom="15dp"
             android:inputType="number"
-            android:textColor="@color/colorPrimary"
             android:textSize="20sp"
             app:layout_constraintEnd_toStartOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -59,12 +59,9 @@
 
         <info.hoang8f.widget.FButton
             android:id="@+id/btnLess"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            style="@style/buttonScore"
             android:text="Less Than"
             android:onClick="onClickLessThan"
-            android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="@id/secondHorizontal"
             app:layout_constraintEnd_toEndOf="@id/firstVertical"
             app:layout_constraintStart_toStartOf="parent"
@@ -72,12 +69,9 @@
 
         <info.hoang8f.widget.FButton
             android:id="@+id/btnGreater"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            style="@style/buttonScore"
             android:onClick="onClickGreaterThan"
             android:text="Greater Than"
-            android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="@id/secondHorizontal"
             app:layout_constraintEnd_toEndOf="@id/secondVertical"
             app:layout_constraintStart_toStartOf="@id/firstVertical"
@@ -85,12 +79,9 @@
 
         <info.hoang8f.widget.FButton
             android:id="@+id/btnEquals"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            style="@style/buttonScore"
             android:onClick="onClickEquals"
             android:text="Equals"
-            android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="@id/secondHorizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/secondVertical"
@@ -98,12 +89,9 @@
 
         <info.hoang8f.widget.FButton
             android:id="@+id/btnOrderTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="1dp"
+            style="@style/buttonScore"
             android:onClick="filterPointsByOrder"
             android:text="Order by Time"
-            android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/secondVertical"
             app:layout_constraintStart_toStartOf="@id/firstVertical"

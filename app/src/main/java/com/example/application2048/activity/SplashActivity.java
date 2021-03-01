@@ -1,12 +1,12 @@
 package com.example.application2048.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.application2048.R;
 
@@ -27,7 +27,6 @@ public class SplashActivity extends AppCompatActivity {
         imageView = findViewById(R.id.imageSplash);
 
         imageView.setAnimation(topAnim);
-
 
         TimerTask timerTask = new TimerTask() {
             @Override

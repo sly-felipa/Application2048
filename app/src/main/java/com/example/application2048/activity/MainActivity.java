@@ -50,18 +50,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Store.MainContext = this;
+
         this.db = new DBSQLite(this);
 
         this.scoreNumberView = findViewById(R.id.scoreNumber);
         this.bestScoreNumberView = findViewById(R.id.bestNumber);
         this.btnNewGame = findViewById(R.id.btnNewGame);
-
-        setListeners();
-
         askUsername();
-
     }
 
+    /**
+     * Busca el score máximo.
+     */
     private void searchMaxScore(){
         Score maxScore = this.db.findMaxScore();
         if (maxScore != null) {
@@ -70,15 +71,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setListeners(){
-        this.btnNewGame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startNewGame();
-            }
-        });
+
+    private void onClickSTartNewGame(View v){
+        startNewGame();
     }
 
+    /**
+     * Construye un popUp para que el usuario ingrese su nombre antes de iniciar el juego.
+     */
     private void askUsername(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Please, enter your username:");
@@ -91,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
         builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-
                 startNewGame();
             }
         });
@@ -109,19 +108,23 @@ public class MainActivity extends AppCompatActivity {
                 dialog.cancel();
             }
         });
-
         builder.show();
     }
 
+    /**
+     * Inicia un score son sus atributos básicos para cada juego nuevo.
+     */
     private void initScore() {
         this.score = 0;
-        long millis =Calendar.getInstance().getTimeInMillis();
-        this.currentScore = new Score(0,0,millis,0,username);
+        long millisDate =Calendar.getInstance().getTimeInMillis();
+        this.currentScore = new Score(0,0,millisDate,0,username);
         currentScore = this.db.insertScore(currentScore);
         updateStats();
     }
 
-
+    /**
+     * Inicia una nueva partida.
+     */
     private void startNewGame() {
         if(game!=null){
             cleanView();
@@ -134,67 +137,79 @@ public class MainActivity extends AppCompatActivity {
         initScore();
     }
 
+
     private void setEvents() {
         ConstraintLayout transparence = this.findViewById(R.id.transparence);
         transparence.setOnTouchListener(new GameSwipeListener(this));
 
     }
 
+    /**
+     * Identifica a qué dirección se deben mover los boxes.
+     * @param direction
+     * @return
+     */
     private Position directionVector(int direction) {
         Position pos;
 
         switch (direction) {
-            case 0://arriba
-//                pos = new Position(0, -1);
+            case 0://up
                 pos = new Position(-1, 0);
                 break;
-            case 1://abajo
-//                pos = new Position(0, 1);
+            case 1://down
                 pos = new Position(1, 0);
                 break;
-            case 2://izq
-//                pos = new Position(-1, 0);
+            case 2://let
                 pos = new Position(0, -1);
                 break;
-            case 3://dere
-//                pos = new Position(1, 0);
+            case 3://rigth
                 pos = new Position(0, 1);
                 break;
             default:
-//                pos = new Position(0, 0);
                 pos = new Position(0, 0);
                 break;
         }
-
         return pos;
     }
 
+    /**
+     * Calcula a la máxima posición a la que se puede mover un box.
+     * @param direction
+     * @param box
+     * @return
+     */
     public ArrayList<Position> calculateMaxPosition(Position direction, Box box) {
-        Position anterior = new Position(0, 0);
-        Position next = new Position(box.getPosition().getX(), box.getPosition().getY());
-        //next = box.getPosition();
+        Position previousPosition = new Position(0, 0);
+        Position nextPosition = new Position(box.getPosition().getX(), box.getPosition().getY());
 
         do {
-            anterior = new Position(next.getX(), next.getY());
-            next = anterior.sum(direction);
-        } while ((next.getX() >= 0 && next.getX() < 4 && next.getY() >= 0 && next.getY() < 4)
-                && (game.getTable().getBoxArray()[next.getX()][next.getY()] == null));
+            previousPosition = new Position(nextPosition.getX(), nextPosition.getY());
+            nextPosition = previousPosition.sum(direction);
+        } while ((nextPosition.getX() >= 0 && nextPosition.getX() < 4 && nextPosition.getY() >= 0 && nextPosition.getY() < 4)
+                && (game.getTable().getBoxArray()[nextPosition.getX()][nextPosition.getY()] == null));
 
 
         ArrayList<Position> resultado = new ArrayList<>();
-        resultado.add(anterior);
-        resultado.add(next);
+        resultado.add(previousPosition);
+        resultado.add(nextPosition);
 
         return resultado;
     }
 
+    /**
+     * Calcula el orden de los indices para recorrer la tabla de acuerdo al tipo de vector de dirección.
+     * @param direction
+     * @param indexI
+     * @param indexJ
+     */
     private void getLoopIndex(Position direction, ArrayList<Integer> indexI, ArrayList<Integer> indexJ) {
+
         for (int i = 0; i < 4; i++) {
             indexI.add(i);
             indexJ.add(i);
         }
 
-        //arriba para abajo
+        //3/0 -> 0/3
         if (direction.getX() == 1) {
             indexI.clear();
             for (int i = 3; i >= 0; i--) {
@@ -202,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        //izquierda a derecha
+        //0/3 -> 3/0
         if (direction.getY() == 1) {
             indexJ.clear();
             for (int i = 3; i >= 0; i--) {
@@ -211,6 +226,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     *
+     * @param direction
+     */
     public void move(int direction) {
         // 0 up 1 down 2 left 3 right
         Position directionVector = directionVector(direction);
@@ -219,18 +238,20 @@ public class MainActivity extends AppCompatActivity {
         getLoopIndex(directionVector, indexI, indexJ);
 
         for (Integer i : indexI) {
-            for (Integer j : indexJ) {
+                for (Integer j : indexJ) {
                 Box box = game.getTable().getBoxArray()[i][j];
                 if (box != null) {
-                    ArrayList<Position> posiblePositions = calculateMaxPosition(directionVector, box);
+                    //posiciones hasta dónde se puede mover el box
+                    ArrayList<Position> possiblePositions = calculateMaxPosition(directionVector, box);
 
-                    Position next = posiblePositions.get(1);
+                    Position next = possiblePositions.get(1);
                     Box nextBox = null;
                     if (next.getX() <= 3 && next.getY() <= 3 && next.getX() >= 0 && next.getY() >= 0) {
+                        //
                         nextBox = game.getTable().getBoxArray()[next.getX()][next.getY()];
                     }
                     if (nextBox != null && nextBox.getContent() == box.getContent() && !nextBox.isMixed()) {
-                        // podre mezclarme
+                        // podré mezclarme
                         ConstraintLayout table = this.findViewById(R.id.table);
 
                         Box mixedBox = new Box(box.getContent() * 2, next);
@@ -254,7 +275,8 @@ public class MainActivity extends AppCompatActivity {
 
                         applyMovement(mixedBox, next);
                     } else {
-                        Position anterior = posiblePositions.get(0);
+                        //movimiento limpio
+                        Position anterior = possiblePositions.get(0);
                         game.getTable().getBoxArray()[box.getPosition().getX()][box.getPosition().getY()] = null;
                         box.setPosition(anterior);
                         game.getTable().getBoxArray()[box.getPosition().getX()][box.getPosition().getY()] = box;
@@ -288,6 +310,9 @@ public class MainActivity extends AppCompatActivity {
         this.updateStats();
     }
 
+    /**
+     * Limpia el view de boxes.
+     */
     private void cleanView(){
         ConstraintLayout table = this.findViewById(R.id.table);
 

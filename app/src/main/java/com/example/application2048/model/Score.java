@@ -6,7 +6,6 @@ import com.example.application2048.utils.StringUtils;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Objects;
 
 public class Score {
@@ -16,14 +15,10 @@ public class Score {
     private double secondsGame;
     private String name = "Anonymous";
 
-//    Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-//    long secondsSinceEpoch = calendar.getTimeInMillis() / 1000L;
-
-
     public Score() {
     }
 
-    public Score(long id, int points, long date, double secondsGame,String name) {
+    public Score(long id, int points, long date, double secondsGame, String name) {
         this.id = id;
         this.points = points;
         this.date = date;
@@ -71,24 +66,31 @@ public class Score {
         this.name = name;
     }
 
-    public String getFormattedDate(){
-        try{
+    /**
+     * Formatea la fecha en que se juega tipo calendario.
+     *
+     * @return
+     */
+    public String getFormattedDate() {
+        try {
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(this.date);
             DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
             return formatter.format(calendar.getTime());
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return "<unparseable>";
         }
     }
 
-
-
-    public String getFormattedSecondsGame(){
-        int minutes = (int)(this.secondsGame/60);
-        int secondsLeft = (int)(this.secondsGame%60);
-
-        return StringUtils.padLeft(String.valueOf(minutes),2,'0')+ ":"+StringUtils.padLeft(String.valueOf(secondsLeft),2,'0');
+    /**
+     * Formatea los segundos jugados en minutos y en segundos.
+     *
+     * @return
+     */
+    public String getFormattedSecondsGame() {
+        int minutes = (int) (this.secondsGame / 60);
+        int secondsLeft = (int) (this.secondsGame % 60);
+        return StringUtils.padLeft(String.valueOf(minutes), 2, '0') + ":" + StringUtils.padLeft(String.valueOf(secondsLeft), 2, '0');
     }
 
     @Override
@@ -96,7 +98,7 @@ public class Score {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Score score = (Score) o;
-        return id>0 && id == score.id;
+        return id > 0 && id == score.id;
     }
 
     @Override

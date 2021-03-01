@@ -112,6 +112,7 @@
             android:layout_marginTop="5dp"
             android:background="@drawable/oval_button"
             android:paddingLeft="30dp"
+            android:onClick="onClickSTartNewGame"
             android:paddingRight="30dp"
             android:text="@string/play_game"
             android:textColor="@color/white"
