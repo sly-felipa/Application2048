@@ -43,26 +43,27 @@ public class DBSQLite extends SQLiteOpenHelper implements IDB {
         onCreate(db);
     }
 
-    @Override
-    public Score findScoreById(int id) {
-        return null;
-    }
-
+    /**
+     * Encuentra puntuaciones de acuerdo al filtro que se le ingrese.
+     * @param points
+     * @param sign
+     * @return
+     */
     @Override
     public ArrayList<Score> findByPoints(int points, String sign) {
         ArrayList<Score> scores = new ArrayList<>();
-        String query = "SELECT * FROM SCORES WHERE POINTS "+ sign + " "+points;
+        String query = "SELECT * FROM SCORES WHERE POINTS " + sign + " " + points;
         Cursor cursor = null;
 
-        try{
-            if(mReadableDB == null){
+        try {
+            if (mReadableDB == null) {
                 mReadableDB = getReadableDatabase();
             }
 
             cursor = mReadableDB.rawQuery(query, null);
             cursor.moveToFirst();
 
-            do{
+            do {
                 Score score = new Score(
                         cursor.getLong(cursor.getColumnIndex("ID")),
                         cursor.getInt(cursor.getColumnIndex("POINTS")),
@@ -72,13 +73,12 @@ public class DBSQLite extends SQLiteOpenHelper implements IDB {
                 );
                 scores.add(score);
                 cursor.moveToNext();
-            }while(!cursor.isAfterLast());
+            } while (!cursor.isAfterLast());
 
-        }catch (Exception ex){
+        } catch (Exception ex) {
             Log.d(TAG, "QUERY ALL EXCEPTION! " + ex.getMessage());
-        }
-        finally{
-            if(cursor!= null){
+        } finally {
+            if (cursor != null) {
                 cursor.close();
             }
         }
@@ -86,21 +86,25 @@ public class DBSQLite extends SQLiteOpenHelper implements IDB {
         return scores;
     }
 
+    /**
+     * Encuentra todos los scores.
+     * @return
+     */
     @Override
     public ArrayList<Score> findAllScores() {
         ArrayList<Score> scores = new ArrayList<>();
         String query = "SELECT * FROM SCORES";
         Cursor cursor = null;
 
-        try{
-            if(mReadableDB == null){
+        try {
+            if (mReadableDB == null) {
                 mReadableDB = getReadableDatabase();
             }
 
             cursor = mReadableDB.rawQuery(query, null);
             cursor.moveToFirst();
 
-            do{
+            do {
                 Score score = new Score(
                         cursor.getLong(cursor.getColumnIndex("ID")),
                         cursor.getInt(cursor.getColumnIndex("POINTS")),
@@ -110,13 +114,12 @@ public class DBSQLite extends SQLiteOpenHelper implements IDB {
                 );
                 scores.add(score);
                 cursor.moveToNext();
-            }while(!cursor.isAfterLast());
+            } while (!cursor.isAfterLast());
 
-        }catch (Exception ex){
+        } catch (Exception ex) {
             Log.d(TAG, "QUERY ALL EXCEPTION! " + ex.getMessage());
-        }
-        finally{
-            if(cursor!= null){
+        } finally {
+            if (cursor != null) {
                 cursor.close();
             }
         }
@@ -124,64 +127,62 @@ public class DBSQLite extends SQLiteOpenHelper implements IDB {
         return scores;
     }
 
+    /**
+     * Encuentra el score con la puntuación más alta.
+     * @return
+     */
     @Override
     public Score findMaxScore() {
-        ArrayList<Score> scores = new ArrayList<>();
-        String query = "SELECT * FROM SCORES WHERE POINTS GROUP BY ID, POINTS,DATE,SECONDS_GAME HAVING POINTS = MAX(POINTS)";
+        String query = "SELECT ID, MAX(POINTS), DATE, SECONDS_GAME, NAME  FROM SCORES";
+
         Cursor cursor = null;
 
-        try{
-            if(mReadableDB == null){
+        try {
+            if (mReadableDB == null) {
                 mReadableDB = getReadableDatabase();
             }
 
             cursor = mReadableDB.rawQuery(query, null);
             cursor.moveToFirst();
 
-            do{
-                Score score = new Score(
-                        cursor.getLong(cursor.getColumnIndex("ID")),
-                        cursor.getInt(cursor.getColumnIndex("POINTS")),
-                        cursor.getLong(cursor.getColumnIndex("DATE")),
-                        cursor.getDouble(cursor.getColumnIndex("SECONDS_GAME")),
-                        cursor.getString(cursor.getColumnIndex("NAME"))
-                );
-                scores.add(score);
-                cursor.moveToNext();
-            }while(!cursor.isAfterLast());
+            Score score = new Score(
+                    cursor.getLong(cursor.getColumnIndex("ID")),
+                    cursor.getInt(cursor.getColumnIndex("MAX(POINTS)")),
+                    cursor.getLong(cursor.getColumnIndex("DATE")),
+                    cursor.getDouble(cursor.getColumnIndex("SECONDS_GAME")),
+                    cursor.getString(cursor.getColumnIndex("NAME"))
+            );
+            return score;
 
-        }catch (Exception ex){
+        } catch (Exception ex) {
             Log.d(TAG, "QUERY ALL EXCEPTION! " + ex.getMessage());
-        }
-        finally{
-            if(cursor!= null){
+            return null;
+        } finally {
+            if (cursor != null) {
                 cursor.close();
             }
         }
-
-        if(scores.size()>0){
-            return scores.get(0);
-        }
-        else{
-            return null;
-        }
     }
 
+    /**
+     * Inserta un score a la base de datos.
+     * @param score
+     * @return
+     */
     @Override
     public Score insertScore(Score score) {
         ContentValues values = new ContentValues();
-        //values.put("ID",);
         long generatedId = 0;
         values.put("POINTS", score.getPoints());
         values.put("DATE", score.getDate());
-        values.put("SECONDS_GAME",score.getSecondsGame());
+        values.put("SECONDS_GAME", score.getSecondsGame());
         values.put("NAME", score.getName());
-        try{
-            if(mWritableDB == null){
+        try {
+            if (mWritableDB == null) {
                 mWritableDB = getWritableDatabase();
             }
-            generatedId = mWritableDB.insert("SCORES",null,values);
-        }catch (Exception ex){
+            generatedId = mWritableDB.insert("SCORES", null, values);
+        } catch (Exception ex) {
             Log.d(TAG, "INSERT EXCEPTION! " + ex.getMessage());
         }
 
@@ -189,36 +190,46 @@ public class DBSQLite extends SQLiteOpenHelper implements IDB {
         return score;
     }
 
+    /**
+     * Borra un score de la base de datos.
+     * @param score
+     */
     @Override
     public void deleteScore(Score score) {
         int affectedRows = 0;
 
         try {
-            if(mWritableDB==null){
+            if (mWritableDB == null) {
                 mWritableDB = getWritableDatabase();
             }
-            affectedRows = mWritableDB.delete("SCORES","ID = ?",new String[]{String.valueOf(score.getId())});
-        }catch(Exception ex){
+            affectedRows = mWritableDB.delete("SCORES", "ID = ?", new String[]{String.valueOf(score.getId())});
+        } catch (Exception ex) {
             Log.d(TAG, "DELETE EXCEPTION! " + ex.getMessage());
         }
     }
 
+    /**
+     * Actualiza la información de un score.
+     * @param score
+     * @return
+     */
     @Override
     public Score updateScore(Score score) {
         long generatedId = 0;
         try {
             if (mWritableDB == null) {
-                mWritableDB = getWritableDatabase();}
+                mWritableDB = getWritableDatabase();
+            }
             ContentValues values = new ContentValues();
             values.put("POINTS", score.getPoints());
             values.put("NAME", score.getName());
-            values.put("SECONDS_GAME",score.getSecondsGame());
+            values.put("SECONDS_GAME", score.getSecondsGame());
 
             generatedId = mWritableDB.update("SCORES", values, "ID" + " = ?",
                     new String[]{String.valueOf(score.getId())});
 
         } catch (Exception e) {
-            Log.d (TAG, "UPDATE EXCEPTION! " + e.getMessage());
+            Log.d(TAG, "UPDATE EXCEPTION! " + e.getMessage());
         }
         return score;
     }

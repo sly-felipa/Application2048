@@ -63,7 +63,7 @@
     <TextView
         android:id="@+id/txtUserName"
         style="@style/descriptionItems"
-        android:text="dfgdfg"
+        android:text=""
         app:layout_constraintBottom_toBottomOf="@id/secondHorizontal"
         app:layout_constraintEnd_toStartOf="@id/firstVertical"
         app:layout_constraintStart_toStartOf="parent"

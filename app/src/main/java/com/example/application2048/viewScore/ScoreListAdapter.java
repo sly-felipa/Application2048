@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.application2048.R;
 import com.example.application2048.activity.ManageScoresActivity;
 import com.example.application2048.eventlisteners.ButtonOnClickListener;
-import com.example.application2048.eventlisteners.OnAdapterLoadedEventListener;
 import com.example.application2048.eventlisteners.OnEditingEventListener;
 import com.example.application2048.eventlisteners.OnScoreDeletingEventListener;
 import com.example.application2048.eventlisteners.OnSharingEventListener;
@@ -52,7 +51,6 @@ public class ScoreListAdapter extends RecyclerView.Adapter<ScoreListAdapter.Scor
     private ArrayList<Score> scoreList;
     static ManageScoresActivity mContext;
     private OnScoreDeletingEventListener mOnScoreDeleting;
-//    private OnAdapterLoadedEventListener mOnAdapterLoaded;
     private OnSharingEventListener mOnSharingRequest;
     private OnEditingEventListener mOnScoreEditing;
 
@@ -60,14 +58,11 @@ public class ScoreListAdapter extends RecyclerView.Adapter<ScoreListAdapter.Scor
         mInflater = LayoutInflater.from(context);
         mContext = (ManageScoresActivity) context;
         scoreList = scoreListOrigin;
-
-//        if (mOnAdapterLoaded != null) {
-//            mOnAdapterLoaded.onLoaded("Ya estoy listo!!");
-//        }
     }
 
     /**
      * Setea la lista de scores a mostrar.
+     *
      * @param scores
      */
     public void setScoreList(ArrayList<Score> scores) {
@@ -77,18 +72,16 @@ public class ScoreListAdapter extends RecyclerView.Adapter<ScoreListAdapter.Scor
 
     /**
      * Setea un evento para luego borrar un score.
+     *
      * @param eventListener
      */
     public void setOnScoreDeletingEventListener(OnScoreDeletingEventListener eventListener) {
         mOnScoreDeleting = eventListener;
     }
 
-//    public void setOnAdapterLoadedEventListener(OnAdapterLoadedEventListener eventListener) {
-//        mOnAdapterLoaded = eventListener;
-//    }
-
     /**
      * Setea un evento para luego compartir un score.
+     *
      * @param eventListener
      */
     public void setOnSharingEventListener(OnSharingEventListener eventListener) {
@@ -97,6 +90,7 @@ public class ScoreListAdapter extends RecyclerView.Adapter<ScoreListAdapter.Scor
 
     /**
      * Setea un evento para luego editar un score.
+     *
      * @param eventListener
      */
     public void setOnScoreEditingEventListener(OnEditingEventListener eventListener) {
@@ -118,10 +112,6 @@ public class ScoreListAdapter extends RecyclerView.Adapter<ScoreListAdapter.Scor
         holder.textPoints.setText(String.valueOf(current.getPoints()));
         holder.textDate.setText(current.getFormattedDate());
         holder.textTime.setText(current.getFormattedSecondsGame());
-
-//        if (mOnAdapterLoaded != null) {
-//            mOnAdapterLoaded.onLoaded("Hola soy el score " + current.getId());
-//        }
 
         final ScoreViewHolder viewHolder = holder;
         holder.delete_button.setOnClickListener(new ButtonOnClickListener(

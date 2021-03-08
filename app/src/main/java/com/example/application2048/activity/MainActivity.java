@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,13 +35,12 @@ public class MainActivity extends AppCompatActivity {
     private int firstBestScore = 0;
     private String username = "Anonymous";
     private Score currentScore;
+    private GameSwipeListener gameSwipeListener;
 
     // views
     private TextView scoreNumberView;
     private TextView bestScoreNumberView;
 
-    //Button
-    private Button btnNewGame;
     ////////
 
     @Override
@@ -56,14 +54,13 @@ public class MainActivity extends AppCompatActivity {
 
         this.scoreNumberView = findViewById(R.id.scoreNumber);
         this.bestScoreNumberView = findViewById(R.id.bestNumber);
-        this.btnNewGame = findViewById(R.id.btnNewGame);
         askUsername();
     }
 
     /**
      * Busca el score máximo.
      */
-    private void searchMaxScore(){
+    private void searchMaxScore() {
         Score maxScore = this.db.findMaxScore();
         if (maxScore != null) {
             this.bestScore = maxScore.getPoints();
@@ -71,15 +68,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    private void onClickSTartNewGame(View v){
+    /**
+     * Inicia una partida nueva.
+     * @param v
+     */
+    public void onClickSTartNewGame(View v) {
         startNewGame();
     }
 
     /**
      * Construye un popUp para que el usuario ingrese su nombre antes de iniciar el juego.
      */
-    private void askUsername(){
+    private void askUsername() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Please, enter your username:");
         builder.setCancelable(false);
@@ -112,12 +112,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * Muestra el mensaje de finalización del juego.
+     */
+    public void showGameOver(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Game over! Press ok to play again.");
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startNewGame();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+    /**
      * Inicia un score son sus atributos básicos para cada juego nuevo.
      */
     private void initScore() {
         this.score = 0;
-        long millisDate =Calendar.getInstance().getTimeInMillis();
-        this.currentScore = new Score(0,0,millisDate,0,username);
+        long millisDate = Calendar.getInstance().getTimeInMillis();
+        this.currentScore = new Score(0, 0, millisDate, 0, username);
         currentScore = this.db.insertScore(currentScore);
         updateStats();
     }
@@ -126,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
      * Inicia una nueva partida.
      */
     private void startNewGame() {
-        if(game!=null){
+        if (game != null) {
             cleanView();
         }
 
@@ -137,7 +159,9 @@ public class MainActivity extends AppCompatActivity {
         initScore();
     }
 
-
+    /**
+     * Setea un capa transparente encima de la tabla para coger los movimientos.
+     */
     private void setEvents() {
         ConstraintLayout transparence = this.findViewById(R.id.transparence);
         transparence.setOnTouchListener(new GameSwipeListener(this));
@@ -146,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Identifica a qué dirección se deben mover los boxes.
+     *
      * @param direction
      * @return
      */
@@ -173,7 +198,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Calcula a la máxima posición a la que se puede mover un box.
+     * Calcula la máxima posición a la que se puede mover un box.
+     *
      * @param direction
      * @param box
      * @return
@@ -189,11 +215,11 @@ public class MainActivity extends AppCompatActivity {
                 && (game.getTable().getBoxArray()[nextPosition.getX()][nextPosition.getY()] == null));
 
 
-        ArrayList<Position> resultado = new ArrayList<>();
-        resultado.add(previousPosition);
-        resultado.add(nextPosition);
+        ArrayList<Position> result = new ArrayList<>();
+        result.add(previousPosition);
+        result.add(nextPosition);
 
-        return resultado;
+        return result;
     }
 
     /**
@@ -204,6 +230,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void getLoopIndex(Position direction, ArrayList<Integer> indexI, ArrayList<Integer> indexJ) {
 
+        //0/0 -> 3/3
         for (int i = 0; i < 4; i++) {
             indexI.add(i);
             indexJ.add(i);
@@ -227,27 +254,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * Mueve un box en el modelo y la vista.
      *
      * @param direction
      */
     public void move(int direction) {
+
+        if (isGameOver()) {
+            Toast.makeText(this, "GAME OVER :(", Toast.LENGTH_SHORT).show();
+            showGameOver();
+        }
+
         // 0 up 1 down 2 left 3 right
+        boolean move = false;
         Position directionVector = directionVector(direction);
         ArrayList<Integer> indexI = new ArrayList<>();
         ArrayList<Integer> indexJ = new ArrayList<>();
         getLoopIndex(directionVector, indexI, indexJ);
 
         for (Integer i : indexI) {
-                for (Integer j : indexJ) {
+            for (Integer j : indexJ) {
                 Box box = game.getTable().getBoxArray()[i][j];
                 if (box != null) {
-                    //posiciones hasta dónde se puede mover el box
                     ArrayList<Position> possiblePositions = calculateMaxPosition(directionVector, box);
 
                     Position next = possiblePositions.get(1);
                     Box nextBox = null;
                     if (next.getX() <= 3 && next.getY() <= 3 && next.getX() >= 0 && next.getY() >= 0) {
-                        //
                         nextBox = game.getTable().getBoxArray()[next.getX()][next.getY()];
                     }
                     if (nextBox != null && nextBox.getContent() == box.getContent() && !nextBox.isMixed()) {
@@ -255,6 +288,7 @@ public class MainActivity extends AppCompatActivity {
                         ConstraintLayout table = this.findViewById(R.id.table);
 
                         Box mixedBox = new Box(box.getContent() * 2, next);
+
                         this.score += mixedBox.getContent();
                         if (this.score > this.bestScore) {
                             this.bestScore = this.score;
@@ -267,34 +301,42 @@ public class MainActivity extends AppCompatActivity {
                         game.getTable().getBoxArray()[nextBox.getPosition().getX()][nextBox.getPosition().getY()] = null;
 
                         game.getTable().getBoxArray()[mixedBox.getPosition().getX()][mixedBox.getPosition().getY()] = mixedBox;
-
-
+                        mixedBox.setMoved(true);
                         table.removeView(box.getView());
                         table.removeView(nextBox.getView());
-
 
                         applyMovement(mixedBox, next);
                     } else {
                         //movimiento limpio
-                        Position anterior = possiblePositions.get(0);
+                        Position previous = possiblePositions.get(0);
+                        if(box.getPosition().getX()== previous.getX() && box.getPosition().getY()==previous.getY())   {
+                            box.setMoved(false);
+                        }else{
+                            box.setMoved(true);
+                        }
                         game.getTable().getBoxArray()[box.getPosition().getX()][box.getPosition().getY()] = null;
-                        box.setPosition(anterior);
+                        box.setPosition(previous);
                         game.getTable().getBoxArray()[box.getPosition().getX()][box.getPosition().getY()] = box;
-                        applyMovement(box, anterior);
+
+                        applyMovement(box, previous);
                     }
-
-                    //realizar comprobaciones
-                    //box.setMoved(true);
                 }
-
-
             }
         }
 
-        insertRandomBox();
+        for (Integer x : indexI) {
+            for (Integer y : indexJ) {
+                Box boxMov = game.getTable().getBoxArray()[x][y];
+                if (boxMov != null) {
+                    if (boxMov.isMoved()) {
+                        move = true;
+                    }
+                }
+            }
+        }
 
-        if (isGameOver()) {
-            Toast.makeText(this, "GAME OVER :(", Toast.LENGTH_SHORT).show();
+        if (move) {
+            insertRandomBox();
         }
 
         for (int i = 0; i < 4; i++) {
@@ -302,8 +344,8 @@ public class MainActivity extends AppCompatActivity {
                 Box box = game.getTable().getBoxArray()[i][j];
                 if (box != null) {
                     box.setMixed(false);
+                    box.setMoved(false);
                 }
-
             }
         }
 
@@ -313,13 +355,13 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Limpia el view de boxes.
      */
-    private void cleanView(){
+    private void cleanView() {
         ConstraintLayout table = this.findViewById(R.id.table);
 
-        for(int i = 0;i<4;i++){
-            for(int j = 0;j<4;j++){
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
                 Box box = game.getTable().getBoxArray()[i][j];
-                if(box!=null){
+                if (box != null) {
                     table.removeView(box.getView());
                 }
             }
@@ -328,24 +370,53 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *
+     */
     private void updateStats() {
         scoreNumberView.setText(this.score + "");
         bestScoreNumberView.setText(this.bestScore + "");
 
         this.currentScore.setPoints(this.score);
-        this.currentScore.setSecondsGame((Calendar.getInstance().getTimeInMillis() / 1000) - (this.currentScore.getDate()/1000));
+        this.currentScore.setSecondsGame((Calendar.getInstance().getTimeInMillis() / 1000) - (this.currentScore.getDate() / 1000));
 
         this.currentScore = this.db.updateScore(this.currentScore);
-
     }
 
+    /**
+     * Indica que el juego ha terminado.
+     * @return
+     */
     private boolean isGameOver() {
-        return game.getTable().getPositiontsValidToGenerate().size() == 0;
+        boolean anyBoxCanMerge = false;
+        for(int i =0;i<4 && !anyBoxCanMerge;i++){
+            for(int j=0;j<4;j++){
+                Box box = this.game.getTable().getBoxArray()[i][j];
+                if(box!=null){
+                    boolean canMerge = false;
+                    ArrayList<Box> adjacentBoxes = game.getAdjacentBoxes(box);
+                    for(Box adjacent: adjacentBoxes){
+                        if(adjacent.getContent() == box.getContent()){
+                            canMerge = true;
+                            break;
+                        }
+                    }
+                    if(canMerge){
+                        anyBoxCanMerge = true;
+                        break;
+                    }
+                }
+            }
+        }
+        return !anyBoxCanMerge && game.getTable().getPositiontsValidToGenerate().size() == 0;
     }
 
+    /**
+     * Aplica el movimiento del box actualizando la vista.
+     * @param box
+     * @param nextPosition
+     */
     private void applyMovement(Box box, Position nextPosition) {
-        // esta instruccion está machacando cualquier caja que haya ahi puesta previamente
-        // estaría bien antes de setear la nueva caja, ver si se pueden mezclar,
         ConstraintLayout table = this.findViewById(R.id.table);
 
         ConstraintSet layoutView = new ConstraintSet();
@@ -355,6 +426,9 @@ public class MainActivity extends AppCompatActivity {
         layoutView.applyTo(table);
     }
 
+    /**
+     * Inserta los primeros 3 boxes al iniciar la partida.
+     */
     public void insertFirstBoxes() {
         int numBoxes = 3;
         for (int i = 0; i < numBoxes; i++) {
@@ -362,18 +436,23 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Inserta una caja aleatoriamente si hay espacio para hacerlo.
+     */
     private void insertRandomBox() {
         ArrayList<Position> validPositionsToGenerate = game.getTable().getPositiontsValidToGenerate();
 
-        if (validPositionsToGenerate.isEmpty()) {
-            // no tengo sitio para generar nuevas cajas
-        } else {
+        if (!validPositionsToGenerate.isEmpty()) {
             int randomNum = ThreadLocalRandom.current().nextInt(0, (validPositionsToGenerate.size() - 1) + 1);
             Position randomPos = validPositionsToGenerate.get(randomNum);
             insertBoxModelAndView(randomPos);
         }
     }
 
+    /**
+     * Inserta un box aleatorio en el modelo y la vista.
+     * @param randomPos
+     */
     private void insertBoxModelAndView(Position randomPos) {
         int randomContent = game.generateRandomContent();
         Box newBox = new Box(randomContent, randomPos);
@@ -390,22 +469,39 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void setPositionInView(ConstraintSet layoutView, int id, Position randomPos) {
-        String idImageView = "box" + randomPos.getX() + "" + randomPos.getY();
-        int idImgView = getResources().getIdentifier(idImageView, "id", getPackageName());
-        layoutView.connect(id, ConstraintSet.RIGHT, idImgView, ConstraintSet.RIGHT, 0);
-        layoutView.connect(id, ConstraintSet.LEFT, idImgView, ConstraintSet.LEFT, 0);
-        layoutView.connect(id, ConstraintSet.TOP, idImgView, ConstraintSet.TOP, 0);
-        layoutView.connect(id, ConstraintSet.BOTTOM, idImgView, ConstraintSet.BOTTOM, 0);
-
-    }
-
+    /**
+     * Seteaba el textView para que herede las dimensiones del imageView.
+     * @param layoutView
+     * @param id
+     */
     private void setWidthHeightAndRatio(ConstraintSet layoutView, int id) {
         layoutView.constrainHeight(id, 0);
         layoutView.constrainWidth(id, 0);
         layoutView.setDimensionRatio(id, "1:1");
     }
 
+    /**
+     * Conecta los lado del textView.
+     * @param layoutView
+     * @param id
+     * @param randomPos
+     */
+    private void setPositionInView(ConstraintSet layoutView, int id, Position randomPos) {
+
+        String idImageView = "box" + randomPos.getX() + "" + randomPos.getY();
+        int idImgView = getResources().getIdentifier(idImageView, "id", getPackageName());
+        layoutView.connect(id, ConstraintSet.RIGHT, idImgView, ConstraintSet.RIGHT, 0);
+        layoutView.connect(id, ConstraintSet.LEFT, idImgView, ConstraintSet.LEFT, 0);
+        layoutView.connect(id, ConstraintSet.TOP, idImgView, ConstraintSet.TOP, 0);
+        layoutView.connect(id, ConstraintSet.BOTTOM, idImgView, ConstraintSet.BOTTOM, 0);
+    }
+
+
+    /**
+     * Genera un view para un box.
+     * @param content
+     * @return
+     */
     private TextView generateViewForBox(int content) {
         TextView view = (TextView) this.getLayoutInflater().inflate(R.layout.box, null);
         view.setId(View.generateViewId());

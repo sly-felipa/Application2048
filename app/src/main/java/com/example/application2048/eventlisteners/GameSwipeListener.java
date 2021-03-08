@@ -43,40 +43,27 @@ public class GameSwipeListener implements View.OnTouchListener {
                 double dist = Math.sqrt((posX - startX) * (posX - startX) + (posY - startY) * (posY - startY));
 
                 if (moving && dist >= minimumDistance) {
-                    // consideramos movimiento
                     float diffX = posX - startX;
                     float diffY = posY - startY;
                     // 0 up 1 down 2 left 3 right
 
                     if (Math.abs(diffX) > Math.abs(diffY)) {
                         if (diffX < 0) {
-                            // izquierda
                             mainActivity.move(2);
                         } else {
-                            // derecha
                             mainActivity.move(3);
-
                         }
                     } else {
                         if (diffY < 0) {
-                            // arriba
                             mainActivity.move(0);
-
                         } else {
-                            // abajo
                             mainActivity.move(1);
-
                         }
                     }
-
-
                     moving = false;
                 }
-
-
                 break;
         }
-
         return true;
     }
 }

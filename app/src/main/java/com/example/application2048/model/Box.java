@@ -11,8 +11,8 @@ public class Box {
     private int content;
     private Position position;
     private TextView view;
-    private boolean moved = false;
     private boolean mixed = false;
+    private boolean moved = false;
 
     public Box(int content, int x, int y) {
         this.content = content;
@@ -46,7 +46,6 @@ public class Box {
 
     public void setView(TextView view) {
         this.view = view;
-
         if (this.content == 2) {
             this.view.setBackgroundColor(ContextCompat.getColor(Store.MainContext, R.color.color2));
         } else if (this.content == 4) {
@@ -78,5 +77,13 @@ public class Box {
 
     public void setMixed(boolean mixed) {
         this.mixed = mixed;
+    }
+
+    public boolean isMoved() {
+        return moved;
+    }
+
+    public void setMoved(boolean moved) {
+        this.moved = moved;
     }
 }

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 public interface IDB {
 
-    Score findScoreById(int id);
     ArrayList<Score> findByPoints(int points, String sign);
     ArrayList<Score> findAllScores();
     Score findMaxScore();

@@ -57,14 +57,6 @@ public class ManageScoresActivity extends AppCompatActivity {
             }
         });
 
-//        mAdapter.setOnAdapterLoadedEventListener(new OnAdapterLoadedEventListener() {
-//            @Override
-//            public void onLoaded(String message) {
-//                Toast.makeText(ManageScoresActivity.this, message, Toast.LENGTH_SHORT).show();
-//
-//            }
-//        });
-
         mAdapter.setOnSharingEventListener(new OnSharingEventListener() {
             @Override
             public void onSharingRequest(String subject, String body) {

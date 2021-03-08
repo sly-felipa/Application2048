@@ -10,7 +10,7 @@
     <string name="delete">Delete</string>
     <string name="share">Share</string>
     <string name="confirm_dialog_title">Alert!</string>
-    <string name="confirm_dialog_message">Do you want to delete the word?</string>
+    <string name="confirm_dialog_message">Do you want to delete the score?</string>
     <string name="confirm">yes</string>
     <string name="cancel">no</string>
     <string name="descriptionScore">the score will not be erased.</string>

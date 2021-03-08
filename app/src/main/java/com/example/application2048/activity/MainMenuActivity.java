@@ -25,7 +25,7 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     /**
-     * Inicia un nuevo juego.
+     * Inicia una nueva partida.
      * @param v
      */
     public void newGame(View v){
